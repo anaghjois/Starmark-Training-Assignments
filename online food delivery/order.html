@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./jquery-3.6.2.min.js"></script>
+    <link rel="stylesheet" href="order.css">
+    <script src="./order.js"></script>
+    <script>
+//Food Display
+  let max=[] 
+      function displayFood() {
+       
+        $("#orders").hide()  
+        $("div:eq(2)").show()
+        const foodDetails = FoodRepo.getFoodDetails()
+        displayAll(foodDetails)
+    }
+      function displayAll(foodDetails){
+        if(foodDetails!=null){
+          const division=document.getElementById("foodDisplay")
+            division.innerHTML += `<div id="container"> </div>`
+
+            let indiaCurrency = new Intl.NumberFormat('en-IN',
+            {
+                style:'currency',
+                currency : 'INR'
+            })  
+
+            const parentDiv = document.getElementById("container")
+
+            for(const values of foodDetails){
+                const div = document.createElement("div")
+
+                div.innerHTML = `
+                <h3>${values.foodname}</h3>
+                <img width="20%" src="${values.foodimg}" alt="${values.foodname}">
+                <p id="price">Amount :${indiaCurrency.format(values.amount)}</p>
+                Quantity :<select>
+                     <option value="1">1</option>
+                     <option value="2">2</option>
+                     <option value="3">3</option>
+                     <option value="4">4</option>
+                     <option value="5">5</option>
+                 </select>
+                <button onclick="onClickAddToCart(${values.foodId})">Add to Cart</button>
+                `
+                parentDiv.appendChild(div)
+            }}
+            else{
+                alert("No Food Details")
+            }
+        }
+        //Adding to food Cart
+        function onClickAddToCart(id) {
+
+              console.log(id)
+              const quantity = $(`select:eq(${id-1})`).val()
+              console.log(quantity)
+              const data = FoodRepo.getFoodbyId(id)
+              data.quantity = Number(quantity)
+              FoodRepo.addToFoodcart(data)
+              console.log(FoodRepo.FoodCart)
+              console.log(data)
+              alert("Food Added to cart")
+              return Orders()
+          }
+          //Display my orders
+          function Orders() {
+            $("div:eq(2)").show()
+            const cartDetail = FoodRepo.viewCart()
+            if (cartDetail.size == 0) {
+                alert("No Items in Cart!!")
+                return DisplayFood()
+            }
+            const cartdata = []
+
+            for(const key of cartDetail.keys()){
+                cartdata.push(cartDetail.get(key))
+            }
+            console.log(cartdata)
+            CartDetails(cartdata)
+            $("div:last").show()
+
+        }
+          function CartDetails(cartdata){
+            $("nav>a:last").show()
+            $("div:last").show()
+            if(cartdata!=null){
+              const division=document.getElementsByTagName("table")
+             // division.innerHTML+=`<tr>`
+              let indiaCurrency = new Intl.NumberFormat('en-IN',
+                        {
+                            style: 'currency',
+                            currency: 'INR'
+                        })
+                        $("table").find('tr:gt(0)').remove()
+               for (const values of cartdata) {
+                        const row = `<tr>
+                          <td>${values.foodname}</td>
+                          <td>${values.quantity}</td>
+                          <td>${indiaCurrency.format(values.amount*values.quantity)}</td>`
+                        $("table").append(row)
+                    }
+                }
+                else {
+                    alert("No products available")
+                }
+            }
+
+            function Bill() {
+               
+              $("div:last").show()
+              $("#foodDisplay").hide()
+                const cartData = FoodRepo.viewCart()
+                $("#orders").children().remove()
+                if(cartData.size == 0){
+                    alert("Add items to cart to gnerate bill!!")
+                   
+                    displayFood()
+                }
+                else{
+                    let total=0
+                    const cartdataArray = []
+                    let indiaCurrency = new Intl.NumberFormat('en-IN',
+                    {
+                        style: 'currency',
+                        currency: 'INR'
+                    })
+                    for (const key of cartData.keys()) {
+                        cartdataArray.push(cartData.get(key))
+                    }
+                    let layout = `<h2>Your Bill</h2>
+                                     <hr> `   
+                    for(const item of cartdataArray){
+                        max.push(item.quantity)
+                        total += item.quantity * item.amount
+                        const Amount2 = indiaCurrency.format(item.quantity * item.amount)
+                        layout += `<div>
+                          <p>${item.foodname} :${item.quantity * item.amount}
+                            </div></p>`
+                    }
+                    total = indiaCurrency.format(total)
+                    layout += `<hr><p> Toal Amount = ${total}`
+                    layout += `<p><button onclick="onPlaceOrder()">Place Order</button></p> `
+                    $("div:last").append(layout)
+                }
+            }
+        function onPlaceOrder() {
+            alert(`Your Order has been placed Successfully!!! \nYour Order will be ready within 30 min`)
+            FoodRepo.clearCart()
+            console.log(FoodRepo.viewCart())
+            $("div").hide()
+
+            //displayFood()
+        }
+
+         $(document).ready(function () {
+            $("div").hide()
+            $("nav>a:last").hide()
+            $("nav>a:eq(2)").hide()
+            $("nav>a:eq(2)").click(Orders)
+            $("nav>a:first").click(function(){
+                $("div").hide()
+                $("div:eq(1)").show(2000)
+            })
+            $("nav>a:eq(1)").click(function(){
+                $("div").hide()
+                $("div:first").show(2000)
+            })
+           $("nav>a:last").click(function(){
+            Bill()
+           })
+            
+      //LOGIN FUNCTION      
+      $("#login-form").submit(function () {
+        let enteredName=$("#userName").val()
+        let enteredPass=$("#userPwd").val()
+        let storedName = localStorage.getItem("username");
+        let storedPass = localStorage.getItem("password");
+
+        if (enteredName == storedName && enteredPass == storedPass) {
+          alert("welcome "+enteredName);
+          $("div").hide()
+          $("div:eq(2)").show()
+          $("nav>a:eq(2)").show()
+          displayFood()
+        }
+        else {
+          alert("Username and Password do not match!");
+        }
+        
+      });
+      //REGISTER FUNCTION
+      $("#registerUser").submit(function () {
+        let newUser = $("#txtName").val();
+        let newPass = $("#txtPwd").val()
+        let newNum = $("#txtNumber").val();
+        let newAdd = $("#txtAddress").val();
+        localStorage.setItem("username",newUser)
+        localStorage.setItem("password",newPass)
+        localStorage.setItem("phoneno",newNum)
+        localStorage.setItem("Address",newAdd)
+        alert("Registered Successfully")
+       $("div").hide()
+      });
+      
+    });
+    </script>
+    <title>Document</title>
+</head>
+<body>
+    <h1>Online Food Ordering</h1>
+    <nav>
+            <a href="#">New User</a>
+            <a href="#">Log In</a>
+            <a href="#"style="float: right;">Orders</a>
+            <a href="#" style="float: right;">Genarate Bill</a>
+    </nav>
+    <div id="login">
+        <h2>Login Page</h2>
+        <form id="login-form"> 
+           <p><label>Name :</label><input id="userName" type="text" placeholder="Enter Username" /></p>
+           <p><label>Password :</label><input id="userPwd" type="password" placeholder="Enter Password"/></p>
+            <input id="butLogin" type="submit" value="Login" /> 
+       </form>
+    </div>
+    <div id="register">
+        <h2>Registration Page</h2>
+        <form id="registerUser" style="align-content: center;"> 
+            <p>User Name :<input id="txtName" type="text" placeholder="Name"/></p>
+            <p>Password :<input id="txtPwd" type="password" placeholder="Password"/></p>
+            <p>Phone Number :<input id="txtNumber" type="number" placeholder="Enter Number"/></p>
+            <p>Address :<input id="txtAddress" type="text" placeholder="Enter Address" ></p>
+            <p><input id="butRegister" type="submit" value="Register" /> </p>
+        </form>
+    </div>
+    <div id="foodDisplay">
+    <h2>Food List</h2>
+    <hr>
+    </div>
+    <div id="orders">
+      <hr>
+      <h2>My Orders</h2>
+      <hr>
+      <table>
+        <tr>
+        <th>Food Name</th>
+        <th>Quantity</th>
+        <th>Amount</th>
+        </tr>
+      </table>
+      
+    </div>
+
+</body>
+</html>
