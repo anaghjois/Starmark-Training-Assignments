@@ -1,7 +1,0 @@
-D:\AnaghaJoisTraining\DotNetTraining\CompleteDotnetTraining\Assessment\bin\Debug\Assessment.exe.config
-D:\AnaghaJoisTraining\DotNetTraining\CompleteDotnetTraining\Assessment\bin\Debug\Assessment.exe
-D:\AnaghaJoisTraining\DotNetTraining\CompleteDotnetTraining\Assessment\bin\Debug\Assessment.pdb
-D:\AnaghaJoisTraining\DotNetTraining\CompleteDotnetTraining\Assessment\obj\Debug\Assessment.csprojAssemblyReference.cache
-D:\AnaghaJoisTraining\DotNetTraining\CompleteDotnetTraining\Assessment\obj\Debug\Assessment.csproj.CoreCompileInputs.cache
-D:\AnaghaJoisTraining\DotNetTraining\CompleteDotnetTraining\Assessment\obj\Debug\Assessment.exe
-D:\AnaghaJoisTraining\DotNetTraining\CompleteDotnetTraining\Assessment\obj\Debug\Assessment.pdb
