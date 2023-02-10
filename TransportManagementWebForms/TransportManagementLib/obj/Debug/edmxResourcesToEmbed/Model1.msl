@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="TransportEntities">
+    <EntitySetMapping Name="tblBills">
+      <EntityTypeMapping TypeName="Model.tblBill">
+        <MappingFragment StoreEntitySet="tblBill">
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="RouteID" ColumnName="RouteID" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPickUps">
+      <EntityTypeMapping TypeName="Model.tblPickUp">
+        <MappingFragment StoreEntitySet="tblPickUp">
+          <ScalarProperty Name="PickupId" ColumnName="PickupId" />
+          <ScalarProperty Name="PickUpPointName" ColumnName="PickUpPointName" />
+          <ScalarProperty Name="RouteID" ColumnName="RouteID" />
+          <ScalarProperty Name="PickUpPrice" ColumnName="PickUpPrice" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblRoutes">
+      <EntityTypeMapping TypeName="Model.tblRoute">
+        <MappingFragment StoreEntitySet="tblRoute">
+          <ScalarProperty Name="RouteID" ColumnName="RouteID" />
+          <ScalarProperty Name="RouteName" ColumnName="RouteName" />
+          <ScalarProperty Name="RouteFare" ColumnName="RouteFare" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblBill">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RouteID" Type="int" />
+          <Property Name="TotalAmount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblPickUp">
+          <Key>
+            <PropertyRef Name="PickupId" />
+          </Key>
+          <Property Name="PickupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PickUpPointName" Type="varchar(max)" Nullable="false" />
+          <Property Name="RouteID" Type="int" />
+          <Property Name="PickUpPrice" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblRoute">
+          <Key>
+            <PropertyRef Name="RouteID" />
+          </Key>
+          <Property Name="RouteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RouteName" Type="varchar(max)" />
+          <Property Name="RouteFare" Type="int" />
+        </EntityType>
+        <Association Name="FK__tblBill__RouteID__1BC821DD">
+          <End Role="tblRoute" Type="Self.tblRoute" Multiplicity="0..1" />
+          <End Role="tblBill" Type="Self.tblBill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoute">
+              <PropertyRef Name="RouteID" />
+            </Principal>
+            <Dependent Role="tblBill">
+              <PropertyRef Name="RouteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tblPickUp__Route__18EBB532">
+          <End Role="tblRoute" Type="Self.tblRoute" Multiplicity="0..1" />
+          <End Role="tblPickUp" Type="Self.tblPickUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoute">
+              <PropertyRef Name="RouteID" />
+            </Principal>
+            <Dependent Role="tblPickUp">
+              <PropertyRef Name="RouteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="tblBill" EntityType="Self.tblBill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPickUp" EntityType="Self.tblPickUp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRoute" EntityType="Self.tblRoute" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tblBill__RouteID__1BC821DD" Association="Self.FK__tblBill__RouteID__1BC821DD">
+            <End Role="tblRoute" EntitySet="tblRoute" />
+            <End Role="tblBill" EntitySet="tblBill" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tblPickUp__Route__18EBB532" Association="Self.FK__tblPickUp__Route__18EBB532">
+            <End Role="tblRoute" EntitySet="tblRoute" />
+            <End Role="tblPickUp" EntitySet="tblPickUp" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblBill">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RouteID" Type="Int32" />
+          <Property Name="TotalAmount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblRoute" Relationship="Self.FK__tblBill__RouteID__1BC821DD" FromRole="tblBill" ToRole="tblRoute" />
+        </EntityType>
+        <EntityType Name="tblPickUp">
+          <Key>
+            <PropertyRef Name="PickupId" />
+          </Key>
+          <Property Name="PickupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PickUpPointName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RouteID" Type="Int32" />
+          <Property Name="PickUpPrice" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblRoute" Relationship="Self.FK__tblPickUp__Route__18EBB532" FromRole="tblPickUp" ToRole="tblRoute" />
+        </EntityType>
+        <EntityType Name="tblRoute">
+          <Key>
+            <PropertyRef Name="RouteID" />
+          </Key>
+          <Property Name="RouteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RouteName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="RouteFare" Type="Int32" />
+          <NavigationProperty Name="tblBills" Relationship="Self.FK__tblBill__RouteID__1BC821DD" FromRole="tblRoute" ToRole="tblBill" />
+          <NavigationProperty Name="tblPickUps" Relationship="Self.FK__tblPickUp__Route__18EBB532" FromRole="tblRoute" ToRole="tblPickUp" />
+        </EntityType>
+        <Association Name="FK__tblBill__RouteID__1BC821DD">
+          <End Role="tblRoute" Type="Self.tblRoute" Multiplicity="0..1" />
+          <End Role="tblBill" Type="Self.tblBill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoute">
+              <PropertyRef Name="RouteID" />
+            </Principal>
+            <Dependent Role="tblBill">
+              <PropertyRef Name="RouteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tblPickUp__Route__18EBB532">
+          <End Role="tblRoute" Type="Self.tblRoute" Multiplicity="0..1" />
+          <End Role="tblPickUp" Type="Self.tblPickUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoute">
+              <PropertyRef Name="RouteID" />
+            </Principal>
+            <Dependent Role="tblPickUp">
+              <PropertyRef Name="RouteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TransportEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblBills" EntityType="Self.tblBill" />
+          <EntitySet Name="tblPickUps" EntityType="Self.tblPickUp" />
+          <EntitySet Name="tblRoutes" EntityType="Self.tblRoute" />
+          <AssociationSet Name="FK__tblBill__RouteID__1BC821DD" Association="Self.FK__tblBill__RouteID__1BC821DD">
+            <End Role="tblRoute" EntitySet="tblRoutes" />
+            <End Role="tblBill" EntitySet="tblBills" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tblPickUp__Route__18EBB532" Association="Self.FK__tblPickUp__Route__18EBB532">
+            <End Role="tblRoute" EntitySet="tblRoutes" />
+            <End Role="tblPickUp" EntitySet="tblPickUps" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="TransportEntities">
+          <EntitySetMapping Name="tblBills">
+            <EntityTypeMapping TypeName="Model.tblBill">
+              <MappingFragment StoreEntitySet="tblBill">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="RouteID" ColumnName="RouteID" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPickUps">
+            <EntityTypeMapping TypeName="Model.tblPickUp">
+              <MappingFragment StoreEntitySet="tblPickUp">
+                <ScalarProperty Name="PickupId" ColumnName="PickupId" />
+                <ScalarProperty Name="PickUpPointName" ColumnName="PickUpPointName" />
+                <ScalarProperty Name="RouteID" ColumnName="RouteID" />
+                <ScalarProperty Name="PickUpPrice" ColumnName="PickUpPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRoutes">
+            <EntityTypeMapping TypeName="Model.tblRoute">
+              <MappingFragment StoreEntitySet="tblRoute">
+                <ScalarProperty Name="RouteID" ColumnName="RouteID" />
+                <ScalarProperty Name="RouteName" ColumnName="RouteName" />
+                <ScalarProperty Name="RouteFare" ColumnName="RouteFare" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

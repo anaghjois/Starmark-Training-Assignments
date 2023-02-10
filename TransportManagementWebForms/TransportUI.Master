@@ -1,0 +1,34 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="TransportUI.master.cs" Inherits="TransportManagement.TransportUI" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title>Transport Manager</title>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+            <div class="row">
+                <h1 class="h1">Transport Management System</h1>
+                <p></p>
+                <hr />
+                <asp:Menu runat="server" Orientation="Horizontal" StaticMenuItemStyle-ItemSpacing="10" StaticMenuItemStyle-HorizontalPadding="10px" StaticMenuStyle-VerticalPadding="10px">
+                    <Items>
+                        <asp:MenuItem Text="AddRoutes" NavigateUrl="~/AddRoutes.aspx"/>
+                        <asp:MenuItem Text="AddPickUpPoint" NavigateUrl="~/AddPickupPoints.aspx"/>
+                        <asp:MenuItem Text="BookRoute" NavigateUrl="~/BookRoute.aspx"/>
+                        <asp:MenuItem Text="GenerateBill" NavigateUrl="~/BillGenerator.aspx"/>
+                    </Items>
+                </asp:Menu>
+                <hr />
+            </div>
+        </div>
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>

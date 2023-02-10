@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tblBill">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RouteID" Type="Int32" />
+    <Property Name="TotalAmount" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tblRoute" Relationship="Self.FK__tblBill__RouteID__1BC821DD" FromRole="tblBill" ToRole="tblRoute" />
+  </EntityType>
+  <EntityType Name="tblPickUp">
+    <Key>
+      <PropertyRef Name="PickupId" />
+    </Key>
+    <Property Name="PickupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PickUpPointName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="RouteID" Type="Int32" />
+    <Property Name="PickUpPrice" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tblRoute" Relationship="Self.FK__tblPickUp__Route__18EBB532" FromRole="tblPickUp" ToRole="tblRoute" />
+  </EntityType>
+  <EntityType Name="tblRoute">
+    <Key>
+      <PropertyRef Name="RouteID" />
+    </Key>
+    <Property Name="RouteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RouteName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="RouteFare" Type="Int32" />
+    <NavigationProperty Name="tblBills" Relationship="Self.FK__tblBill__RouteID__1BC821DD" FromRole="tblRoute" ToRole="tblBill" />
+    <NavigationProperty Name="tblPickUps" Relationship="Self.FK__tblPickUp__Route__18EBB532" FromRole="tblRoute" ToRole="tblPickUp" />
+  </EntityType>
+  <Association Name="FK__tblBill__RouteID__1BC821DD">
+    <End Role="tblRoute" Type="Self.tblRoute" Multiplicity="0..1" />
+    <End Role="tblBill" Type="Self.tblBill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblRoute">
+        <PropertyRef Name="RouteID" />
+      </Principal>
+      <Dependent Role="tblBill">
+        <PropertyRef Name="RouteID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblPickUp__Route__18EBB532">
+    <End Role="tblRoute" Type="Self.tblRoute" Multiplicity="0..1" />
+    <End Role="tblPickUp" Type="Self.tblPickUp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblRoute">
+        <PropertyRef Name="RouteID" />
+      </Principal>
+      <Dependent Role="tblPickUp">
+        <PropertyRef Name="RouteID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TransportEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tblBills" EntityType="Self.tblBill" />
+    <EntitySet Name="tblPickUps" EntityType="Self.tblPickUp" />
+    <EntitySet Name="tblRoutes" EntityType="Self.tblRoute" />
+    <AssociationSet Name="FK__tblBill__RouteID__1BC821DD" Association="Self.FK__tblBill__RouteID__1BC821DD">
+      <End Role="tblRoute" EntitySet="tblRoutes" />
+      <End Role="tblBill" EntitySet="tblBills" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblPickUp__Route__18EBB532" Association="Self.FK__tblPickUp__Route__18EBB532">
+      <End Role="tblRoute" EntitySet="tblRoutes" />
+      <End Role="tblPickUp" EntitySet="tblPickUps" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
